@@ -1,0 +1,236 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mkpworks/Yt-searcher/schema/collection.schema.json",
+  "title": "YouTube collection definition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "title", "description", "types", "fields", "views", "sorts", "storage"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "example": { "type": "boolean" },
+    "language": { "type": "string", "minLength": 1 },
+    "labels": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "item": { "type": "string", "minLength": 1 },
+        "items": { "type": "string", "minLength": 1 }
+      }
+    },
+    "site": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "eyebrow": { "type": "string" },
+        "canonical": { "type": "string" },
+        "repository": { "type": "string" },
+        "perPage": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "themeStorageKey": { "type": "string" },
+        "sampleBanner": { "type": "string" }
+      }
+    },
+    "display": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "showTypeBadge": { "type": "boolean" },
+        "showDuration": { "type": "boolean" },
+        "showDiscover": { "type": "boolean" },
+        "showCrossLinks": { "type": "boolean" }
+      }
+    },
+    "types": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "label", "plural"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z]+(?:-[a-z]+)*$" },
+          "label": { "type": "string", "minLength": 1 },
+          "plural": { "type": "string", "minLength": 1 },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "fields": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/field" }
+    },
+    "entities": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/entity" }
+    },
+    "views": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/view" }
+    },
+    "sorts": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/sort" }
+    },
+    "search": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "placeholder": { "type": "string" }
+      }
+    },
+    "duplicates": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "youtubeId": { "enum": ["error", "ignore"] },
+        "normalizedTitle": { "enum": ["error", "warning", "ignore"] }
+      }
+    },
+    "research": { "$ref": "#/$defs/research" },
+    "storage": { "$ref": "#/$defs/storage" }
+  },
+  "$defs": {
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "type"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]*$" },
+        "label": { "type": "string", "minLength": 1 },
+        "type": {
+          "enum": ["string", "text", "integer", "number", "boolean", "year", "duration", "youtubeId", "stringList", "entityList", "credits", "enum", "url", "type"]
+        },
+        "role": { "enum": ["id", "type", "title", "duration", "year"] },
+        "required": { "type": "boolean" },
+        "unique": { "type": "boolean" },
+        "searchable": { "type": "boolean" },
+        "filterable": { "type": "boolean" },
+        "sortable": { "type": "boolean" },
+        "display": { "enum": ["hidden", "title", "meta", "badge", "byline", "chips", "credits", "duration", "note"] },
+        "swatch": { "type": "boolean" },
+        "filter": { "enum": ["exact", "decade"] },
+        "entity": { "type": "string" },
+        "linkField": { "type": "string" },
+        "appliesTo": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "minItems": { "type": "integer", "minimum": 0 },
+        "values": { "type": "array", "items": { "type": "string" } },
+        "minimum": { "type": "number" },
+        "maximum": { "type": "number" },
+        "unknown": { "type": "number" }
+      }
+    },
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "plural"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z]+(?:-[a-z]+)*$" },
+        "label": { "type": "string" },
+        "plural": { "type": "string" },
+        "crossLinkMin": { "type": "integer", "minimum": 1 },
+        "page": { "type": "boolean" },
+        "attributes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "label", "type"],
+            "properties": {
+              "id": { "type": "string" },
+              "label": { "type": "string" },
+              "type": { "enum": ["string", "stringList"] },
+              "required": { "type": "boolean" },
+              "filterable": { "type": "boolean" },
+              "searchable": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "view": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "source"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z]+(?:-[a-z]+)*$" },
+        "label": { "type": "string" },
+        "source": { "enum": ["field", "entity", "attribute", "list"] },
+        "field": { "type": "string" },
+        "entity": { "type": "string" },
+        "attribute": { "type": "string" },
+        "hideSingletons": { "type": "boolean" },
+        "note": { "type": "string" }
+      }
+    },
+    "sort": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "field", "kind", "direction"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z]+(?:-[a-z]+)*$" },
+        "label": { "type": "string" },
+        "field": { "type": "string" },
+        "kind": { "enum": ["string", "number"] },
+        "direction": { "enum": ["asc", "desc"] },
+        "unknown": { "type": "number" },
+        "unknownLast": { "type": "boolean" }
+      }
+    },
+    "research": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "batchSize": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "prefer": { "type": "array", "items": { "type": "string" } },
+        "avoid": { "type": "array", "items": { "type": "string" } },
+        "recency": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "maxAgeYears"],
+            "properties": {
+              "type": { "type": "string" },
+              "maxAgeYears": { "type": "integer", "minimum": 0 },
+              "note": { "type": "string" }
+            }
+          }
+        },
+        "yearPolicy": { "type": "string" },
+        "entityNamePolicy": { "type": "string" },
+        "dedupe": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "storage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adapter"],
+      "properties": {
+        "adapter": { "enum": ["json", "sqlite"] },
+        "json": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "items": { "type": "string" },
+            "entities": { "type": "string" }
+          }
+        },
+        "sqlite": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "file": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

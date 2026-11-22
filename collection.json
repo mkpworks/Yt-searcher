@@ -1,0 +1,226 @@
+{
+  "id": "example-music-lessons",
+  "title": "Example: Music Lesson Shelf",
+  "description": "A small example of real guitar lessons and interviews on YouTube, grouped by topic and linked by the people in them. Replace this file and the data files to start your own collection.",
+  "example": true,
+  "language": "en",
+  "labels": {
+    "item": "video",
+    "items": "videos"
+  },
+  "site": {
+    "eyebrow": "YouTube collection",
+    "canonical": "https://mkpworks.github.io/Yt-searcher/",
+    "repository": "https://github.com/mkpworks/Yt-searcher",
+    "perPage": 12,
+    "themeStorageKey": "ytc-theme",
+    "sampleBanner": "Sample collection with a handful of verified videos. Replace collection.json and data/ before you research a real topic."
+  },
+  "display": {
+    "showTypeBadge": true,
+    "showDuration": true,
+    "showDiscover": true,
+    "showCrossLinks": true
+  },
+  "types": [
+    { "id": "lesson", "label": "Lesson", "plural": "Lessons" },
+    { "id": "interview", "label": "Interview", "plural": "Interviews" }
+  ],
+  "fields": [
+    {
+      "id": "id",
+      "label": "YouTube ID",
+      "type": "youtubeId",
+      "role": "id",
+      "required": true,
+      "unique": true,
+      "display": "hidden"
+    },
+    {
+      "id": "type",
+      "label": "Type",
+      "type": "type",
+      "role": "type",
+      "required": true,
+      "filterable": true,
+      "searchable": true,
+      "display": "badge"
+    },
+    {
+      "id": "title",
+      "label": "Title",
+      "type": "string",
+      "role": "title",
+      "required": true,
+      "searchable": true,
+      "sortable": true,
+      "display": "title"
+    },
+    {
+      "id": "year",
+      "label": "Year",
+      "type": "year",
+      "role": "year",
+      "required": true,
+      "filterable": true,
+      "filter": "decade",
+      "sortable": true,
+      "unknown": 0,
+      "display": "meta"
+    },
+    {
+      "id": "topic",
+      "label": "Topic",
+      "type": "string",
+      "required": true,
+      "filterable": true,
+      "searchable": true,
+      "sortable": true,
+      "swatch": true,
+      "display": "meta"
+    },
+    {
+      "id": "people",
+      "label": "People",
+      "type": "entityList",
+      "entity": "person",
+      "required": true,
+      "minItems": 1,
+      "searchable": true,
+      "filterable": true,
+      "display": "chips"
+    },
+    {
+      "id": "durationSeconds",
+      "label": "Duration",
+      "type": "duration",
+      "role": "duration",
+      "required": true,
+      "sortable": true,
+      "display": "duration"
+    },
+    {
+      "id": "notes",
+      "label": "Notes",
+      "type": "string",
+      "required": false,
+      "searchable": true,
+      "display": "note"
+    },
+    {
+      "id": "interviewer",
+      "label": "Interviewer",
+      "type": "string",
+      "entity": "person",
+      "required": false,
+      "appliesTo": ["interview"],
+      "searchable": true,
+      "display": "byline"
+    },
+    {
+      "id": "outlet",
+      "label": "Outlet",
+      "type": "string",
+      "required": false,
+      "appliesTo": ["interview"],
+      "filterable": true,
+      "searchable": true,
+      "display": "byline"
+    },
+    {
+      "id": "credits",
+      "label": "Credits",
+      "type": "credits",
+      "entity": "person",
+      "linkField": "people",
+      "required": false,
+      "searchable": true,
+      "display": "credits"
+    }
+  ],
+  "entities": [
+    {
+      "id": "person",
+      "label": "Person",
+      "plural": "People",
+      "crossLinkMin": 2,
+      "page": true,
+      "attributes": [
+        {
+          "id": "instruments",
+          "label": "Instrument",
+          "type": "stringList",
+          "filterable": true,
+          "searchable": true
+        }
+      ]
+    }
+  ],
+  "views": [
+    { "id": "topic", "label": "By topic", "source": "field", "field": "topic" },
+    {
+      "id": "person",
+      "label": "By person",
+      "source": "entity",
+      "entity": "person",
+      "field": "people",
+      "hideSingletons": true,
+      "note": "People who appear only once stay hidden until you search or filter. A person page lists every type together unless a type filter is on."
+    },
+    {
+      "id": "instrument",
+      "label": "By instrument",
+      "source": "attribute",
+      "entity": "person",
+      "field": "people",
+      "attribute": "instruments",
+      "note": "Videos are filed under each instrument listed for a linked person. Someone with no instruments is left out of this view."
+    },
+    { "id": "list", "label": "All videos", "source": "list" }
+  ],
+  "sorts": [
+    { "id": "title", "label": "Title A–Z", "field": "title", "kind": "string", "direction": "asc" },
+    {
+      "id": "year",
+      "label": "Year (oldest first)",
+      "field": "year",
+      "kind": "number",
+      "direction": "asc",
+      "unknown": 0,
+      "unknownLast": true
+    },
+    {
+      "id": "duration",
+      "label": "Running time (longest)",
+      "field": "durationSeconds",
+      "kind": "number",
+      "direction": "desc"
+    }
+  ],
+  "search": {
+    "placeholder": "Title, person, topic, instrument, outlet"
+  },
+  "duplicates": {
+    "youtubeId": "error",
+    "normalizedTitle": "warning"
+  },
+  "research": {
+    "batchSize": 15,
+    "prefer": ["official channel", "broadcaster", "original creator"],
+    "avoid": ["ai-generated", "mashup", "reaction", "clickbait", "compilation"],
+    "recency": [],
+    "yearPolicy": "Only record a year that is stated in the title or description. Otherwise use 0.",
+    "entityNamePolicy": "Use one canonical spelling per person. Match an existing entity name before adding a new one.",
+    "dedupe": ["youtubeId", "same-content"]
+  },
+  "storage": {
+    "adapter": "json",
+    "json": {
+      "items": "data/items.json",
+      "entities": "data/entities.json"
+    },
+    "sqlite": {
+      "file": "data/collection.sqlite"
+    }
+  }
+}

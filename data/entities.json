@@ -1,0 +1,9 @@
+{
+  "person": {
+    "David Gilmour": { "instruments": ["guitar"] },
+    "Julian Lage": { "instruments": ["guitar"] },
+    "Justin Sandercoe": { "instruments": ["guitar"] },
+    "Paul Davids": { "instruments": ["guitar"] },
+    "Rick Beato": { "instruments": ["guitar", "keyboards"] }
+  }
+}

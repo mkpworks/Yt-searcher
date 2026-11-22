@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1X2rW5ATdLQ",
+    "type": "lesson",
+    "title": "How to Play the A Chord | Guitar for Beginners",
+    "year": 0,
+    "topic": "Beginner",
+    "people": ["Justin Sandercoe"],
+    "durationSeconds": 382,
+    "notes": "Official JustinGuitar upload. The title and description do not state a year."
+  },
+  {
+    "id": "42G13XK4Wck",
+    "type": "lesson",
+    "title": "The Best 5 Minutes You’ll Spend Learning Guitar",
+    "year": 0,
+    "topic": "Practice",
+    "people": ["Paul Davids"],
+    "durationSeconds": 758,
+    "notes": "Official Paul Davids upload. The title and description do not state a year."
+  },
+  {
+    "id": "c5l7DlGTUcQ",
+    "type": "interview",
+    "title": "Julian Lage - A Guitar Genius (full interview)",
+    "year": 0,
+    "topic": "Jazz",
+    "people": ["Julian Lage", "Paul Davids"],
+    "durationSeconds": 4399,
+    "interviewer": "Paul Davids",
+    "outlet": "Paul Davids",
+    "credits": [
+      { "name": "Julian Lage", "role": "interviewee" },
+      { "name": "Paul Davids", "role": "interviewer" }
+    ],
+    "notes": "Official upload on the Paul Davids channel. The title and description do not state a year."
+  },
+  {
+    "id": "n45PDizCRLw",
+    "type": "lesson",
+    "title": "Your FIRST Strumming Pattern EVER! | Guitar for Beginners",
+    "year": 0,
+    "topic": "Rhythm",
+    "people": ["Justin Sandercoe"],
+    "durationSeconds": 287,
+    "notes": "Official JustinGuitar upload. The title and description do not state a year."
+  },
+  {
+    "id": "OT_KFCidz_s",
+    "type": "interview",
+    "title": "David Gilmour: The Studio Interview 2025",
+    "year": 2025,
+    "topic": "Rock",
+    "people": ["David Gilmour", "Rick Beato"],
+    "durationSeconds": 6703,
+    "interviewer": "Rick Beato",
+    "outlet": "Rick Beato",
+    "credits": [
+      { "name": "David Gilmour", "role": "interviewee" },
+      { "name": "Rick Beato", "role": "interviewer" }
+    ],
+    "notes": "Official Rick Beato upload. The year is stated in the title."
+  },
+  {
+    "id": "QkrIZBLZEXw",
+    "type": "lesson",
+    "title": "How to Play the D Chord on Guitar",
+    "year": 0,
+    "topic": "Beginner",
+    "people": ["Justin Sandercoe"],
+    "durationSeconds": 513,
+    "notes": "Official JustinGuitar upload. The title and description do not state a year."
+  }
+]

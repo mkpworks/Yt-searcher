@@ -1,0 +1,13 @@
+{
+  "collectionId": "example-music-lessons",
+  "batch": "Replace this with what the batch is looking for",
+  "status": "in_progress",
+  "startedAt": "2026-11-22T00:00:00.000Z",
+  "updatedAt": "2026-11-22T00:00:00.000Z",
+  "queries": [],
+  "cursor": "",
+  "seenIds": [],
+  "addedIds": [],
+  "skipped": [],
+  "notes": ""
+}

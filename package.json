@@ -1,0 +1,17 @@
+{
+  "name": "yt-searcher",
+  "private": true,
+  "description": "Generic static catalogs of YouTube videos. One collection definition drives the data, the validator, and the site.",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "validate": "node scripts/validate-data.js",
+    "check": "node scripts/check-catalog.js",
+    "build": "node scripts/build-site.js",
+    "csv": "node scripts/export-csv.js",
+    "convert": "node scripts/storage-convert.js",
+    "verify": "node scripts/verify-youtube.js",
+    "checkpoint": "node scripts/research-checkpoint.js"
+  }
+}
