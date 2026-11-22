@@ -103,7 +103,7 @@ node scripts/research-checkpoint.js init --batch "what this batch covers"
 
 ## Deploy
 
-Pushes to `main` run `.github/workflows/pages.yml`. The check job validates the data. The build job, which `needs: check`, assembles `_site` and uploads the Pages artifact. The deploy job, which `needs: build`, publishes that artifact. Upload and deploy stay in separate jobs. Pull requests run check and build and do not deploy. `workflow_dispatch` is enabled.
+Pushes to `main` run `.github/workflows/pages.yml`. The check job validates the data. The build job, which `needs: check`, assembles `_site` and uploads the Pages artifact. The deploy job, which `needs: build`, publishes that artifact. Upload and deploy stay in separate jobs. Pull requests run check and build and do not deploy. They also skip `actions/configure-pages`, which fails until Pages is turned on, so a pull request can go green before that setting exists. `workflow_dispatch` is enabled.
 
 The repository owner sets **Settings → Pages → Build and deployment → Source** to **GitHub Actions** before the first deploy.
 

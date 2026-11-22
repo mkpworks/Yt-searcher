@@ -47,7 +47,12 @@ jobs:
           node-version: 22
       - name: Validate collection data
         run: node scripts/validate-data.js
+      # configure-pages asks the Pages API for the site. That 404s until
+      # Settings > Pages > Source is GitHub Actions, which would fail every
+      # pull request. Pull requests still build and upload the artifact.
+      # Deploy stays on push to main, in its own job.
       - name: Configure GitHub Pages
+        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v6
       - name: Build site
         run: node scripts/build-site.js

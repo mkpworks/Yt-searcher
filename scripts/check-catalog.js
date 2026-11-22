@@ -253,6 +253,8 @@ const deployJob = workflow.split(/\n {2}deploy:\n/)[1] || "";
 assert(deployJob.length > 0, "deploy job");
 assert(!deployJob.includes("actions/upload-pages-artifact"), "deploy job only deploys");
 assert(deployJob.includes("pages: write") && deployJob.includes("id-token: write"), "deploy permissions");
+const buildJob = workflow.split(/\n {2}build:\n/)[1].split(/\n {2}deploy:\n/)[0];
+assert(/Configure GitHub Pages\n\s+if: github\.event_name != 'pull_request'\n\s+uses: actions\/configure-pages/.test(buildJob), "pull requests do not require Pages to be enabled");
 
 const built = buildSite({ root, outDir: path.join(temp, "site") });
 assert(built.items === items.length, "build count");
