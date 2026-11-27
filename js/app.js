@@ -452,9 +452,12 @@
     themeButton.setAttribute("aria-label", theme === "light" ? "Switch to dark theme" : "Switch to light theme");
   }
 
-  function optionsHtml(values, labeler) {
+  function optionsHtml(values, labeler, keepOrder) {
+    const source = Array.isArray(values) ? values.slice() : [];
+    const ordered = keepOrder ? source : Catalog.sortOptions(source, labeler);
     const html = ['<option value="All">All</option>'];
-    for (const value of values) {
+    for (const value of ordered) {
+      if (String(value) === "All") continue;
       const label = labeler ? labeler(value) : value;
       html.push('<option value="' + esc(value) + '">' + esc(label) + "</option>");
     }
@@ -476,7 +479,7 @@
       if (!field.filterable || field.role === "type") continue;
       const values = field.filter === "decade" ? index.decades : (index.fieldValues[field.id] || []);
       const labeler = field.type === "entityList" ? (name) => entityOptionLabel(field.entity, name) : null;
-      html += '<label class="field">' + esc(field.label) + '<select data-field="' + esc(field.id) + '">' + optionsHtml(values, labeler) + "</select></label>";
+      html += '<label class="field">' + esc(field.label) + '<select data-field="' + esc(field.id) + '">' + optionsHtml(values, labeler, Catalog.keepsMenuOrder(field)) + "</select></label>";
     }
     for (const filter of index.attributeFilters) {
       html += '<label class="field">' + esc(filter.label) + '<select data-attribute-select="' + esc(filter.key) + '">' + optionsHtml(filter.values, labelToken) + "</select></label>";

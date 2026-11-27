@@ -115,8 +115,20 @@ assert(Catalog.pageCount(13, 12) === 2);
 
 const index = Catalog.buildIndex(items, entities, definition);
 assert(index.decades[0] === "2020s" && index.decades.at(-1) === "Unknown", "decade order");
-assert(index.fieldValues.topic.includes("Beginner") && index.fieldValues.topic.includes("Jazz"));
-assert(index.attributeFilters[0].values.includes("guitar") && index.attributeFilters[0].values.includes("keyboards"));
+assert(index.fieldValues.topic.join(",") === "Beginner,Jazz,Practice,Rhythm,Rock", "topic menu is alphabetical");
+assert(index.fieldValues.people.join(",") === "David Gilmour,Julian Lage,Justin Sandercoe,Paul Davids,Rick Beato", "people menu is alphabetical");
+assert(index.fieldValues.outlet.join(",") === "Paul Davids,Rick Beato", "outlet menu is alphabetical");
+assert(index.attributeFilters[0].values.join(",") === "guitar,keyboards", "instrument menu is alphabetical");
+assert(Catalog.keepsMenuOrder(definition.fields.find((field) => field.id === "year")) === true, "year menu keeps chronological order");
+assert(Catalog.keepsMenuOrder(definition.fields.find((field) => field.id === "topic")) === false, "topic menu is sorted");
+const mixedOptions = Catalog.sortOptions(["Triads", "funk", "Lesson 10", "Lesson 2", "All instruments", "Any"]);
+assert(mixedOptions.slice(0, 2).join(",") === "All instruments,Any", "placeholders stay first");
+assert(mixedOptions.indexOf("funk") < mixedOptions.indexOf("Triads"), "Funk before Triads");
+assert(mixedOptions.indexOf("Lesson 2") < mixedOptions.indexOf("Lesson 10"), "natural numeric order");
+assert(Catalog.sortOptions(["Advanced", "beginner", "Intermediate"]).join(",") === "beginner,Intermediate,Advanced", "difficulty levels stay in level order");
+assert(Catalog.sortOptions(["Jazz", "Beginner", "Advanced"]).join(",") === "Advanced,Beginner,Jazz", "a topic named Beginner still sorts with the other topics");
+assert(Catalog.sortOptions(["b", "a"], (value) => (value === "a" ? "Triads" : "Funk")).join(",") === "b,a", "options sort by the visible label");
+assert(definition.sorts.map((sort) => sort.id).join(",") === "title,year,duration", "sort menu stays in definition order");
 assert(!index.crossNames.person.includes("Julian Lage"), "one-video people are not cross links");
 assert(index.crossNames.person.includes("Justin Sandercoe") && index.crossNames.person.includes("Paul Davids"));
 
