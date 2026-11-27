@@ -60,12 +60,75 @@
     return String(a).localeCompare(String(b), undefined, { sensitivity: "base" });
   }
 
+  const OPTION_COLLATOR = { sensitivity: "base", numeric: true };
+  const LEVEL_RANKS = new Map([
+    ["novice", 0],
+    ["beginner", 1],
+    ["elementary", 2],
+    ["easy", 3],
+    ["intermediate", 4],
+    ["medium", 5],
+    ["advanced", 6],
+    ["hard", 7],
+    ["expert", 8],
+    ["master", 9],
+  ]);
+
+  function compareOptionText(a, b) {
+    return String(a).localeCompare(String(b), undefined, OPTION_COLLATOR);
+  }
+
+  function isPlaceholderOption(value) {
+    const text = String(value == null ? "" : value).trim().toLowerCase();
+    return text === "all" || text === "any" || text.startsWith("all ") || text.startsWith("any ");
+  }
+
+  function optionLabel(value, labeler) {
+    if (typeof labeler === "function") {
+      const label = labeler(value);
+      if (label != null && String(label).trim() !== "") return String(label);
+    }
+    return value == null ? "" : String(value);
+  }
+
+  function isLevelScale(labels) {
+    if (!labels || labels.length < 2) return false;
+    return labels.every((label) => LEVEL_RANKS.has(String(label).trim().toLowerCase()));
+  }
+
+  function sortOptions(values, labeler) {
+    const list = Array.isArray(values) ? values.slice() : [];
+    const placeholders = [];
+    const rest = [];
+    for (const value of list) {
+      const label = optionLabel(value, labeler);
+      if (isPlaceholderOption(value) || isPlaceholderOption(label)) placeholders.push(value);
+      else rest.push(value);
+    }
+    const labels = rest.map((value) => optionLabel(value, labeler));
+    if (isLevelScale(labels)) {
+      rest.sort((a, b) => {
+        const left = LEVEL_RANKS.get(optionLabel(a, labeler).trim().toLowerCase());
+        const right = LEVEL_RANKS.get(optionLabel(b, labeler).trim().toLowerCase());
+        return left - right || compareOptionText(optionLabel(a, labeler), optionLabel(b, labeler));
+      });
+    } else {
+      rest.sort((a, b) => compareOptionText(optionLabel(a, labeler), optionLabel(b, labeler)) || compareOptionText(a, b));
+    }
+    return placeholders.concat(rest);
+  }
+
+  function keepsMenuOrder(field) {
+    if (!field) return false;
+    return field.filter === "decade" || field.type === "year" || field.role === "year";
+  }
+
   function fold(value) {
     return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
 
   function uniqueSorted(values) {
-    return [...new Set(values)].sort(compareNames);
+    return sortOptions([...new Set(values)]);
   }
 
   function formatDuration(seconds) {
@@ -545,6 +608,8 @@
     typeInfo,
     entityInfo,
     compareNames,
+    sortOptions,
+    keepsMenuOrder,
     fold,
     formatDuration,
     formatLong,
